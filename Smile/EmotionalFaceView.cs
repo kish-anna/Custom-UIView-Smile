@@ -15,6 +15,8 @@ namespace Smile
         Color borderColor = new Color(CustomSettings.DefaultBorderColor);
         float borderWidth = CustomSettings.DefaultBorderWidth;
 
+        
+
         private Path mouthPath = new Path();
         Paint paint = new Paint(PaintFlags.AntiAlias);
         float size = 0;
