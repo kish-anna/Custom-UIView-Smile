@@ -22,7 +22,7 @@ namespace TestIOS
             {
 
                 drawFaceBackground(g);
-
+                drawMouth(g);
             }
         }
 
@@ -42,6 +42,21 @@ namespace TestIOS
             // add geometry to graphics context and draw 
             g.AddPath(path);
             g.DrawPath(CGPathDrawingMode.FillStroke);
+        }
+
+        private void drawMouth(CGContext g)
+        {
+            var path = new CGPath();
+
+            path.MoveToPoint(size * 0.22f, size * 0.70f);
+
+            path.AddQuadCurveToPoint(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
+            path.AddQuadCurveToPoint(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
+
+            UIColor.Black.SetFill();
+            g.AddPath(path);
+            g.DrawPath(CGPathDrawingMode.Fill);
+
         }
     }
 }

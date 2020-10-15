@@ -1,28 +1,45 @@
 using System;
 using UIKit;
 using CoreGraphics;
+using Smile;
 
 namespace TestIOS
 {
     public partial class EmotionalFaceView : UIView
     {
         float size = 0;
-        private CGPath mouthPath = new CGPath();
+
+        
+
+        private StateButton _happinessState;
+
+        public StateButton HappinessState
+        {
+            get => _happinessState;
+            set
+            {
+                _happinessState = value;
+                SetNeedsDisplay();
+               
+
+            }
+        }
 
 
         public EmotionalFaceView (IntPtr handle) : base (handle)
         {
             size = Math.Min((float)this.Bounds.Height, (float)this.Bounds.Width);
+            
         }
 
         public override void Draw(CGRect rect)
         {
             base.Draw(rect);
-
+            Console.WriteLine("draw");
             using (CGContext g = UIGraphics.GetCurrentContext())
             {
                 drawFaceBackground(g);
-                drawEyes(g);
+                //drawEyes(g);
                 drawMouth(g);
             }
 
@@ -53,8 +70,8 @@ namespace TestIOS
             var path = new CGPath();
 
             //CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
-            CGRect leftEyeRect = new CGRect(130, 240, size * 0.1f, size * 0.25f);
-            Console.WriteLine($"{size}");
+            CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
+            
 
             g.AddPath(path);
             g.AddEllipseInRect(leftEyeRect);
@@ -70,30 +87,25 @@ namespace TestIOS
 
         private void drawMouth(CGContext g)
         {
-            //mouthPath.Reset();
-            //mouthPath.MoveToPoint(size * 0.22f, size * 0.7f);
+            var path = new CGPath();
 
-            //mouthPath.MoveToPoint(size * 0.22f, size * 1f);
+            path.MoveToPoint(size * 0.22f, size * 0.70f);
 
-            //if (HappinessState == StateButton.Happy)
-            //{
-            //    //mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
-            //    //mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
-            //    mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 1.1f, size * 0.78f, size * 1f);
-            //    mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 1.2f, size * 0.22f, size * 1f);
+            if (HappinessState == StateButton.Happy)
+            {
+                path.AddQuadCurveToPoint(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
+                path.AddQuadCurveToPoint(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
 
-            //}
-            //else
-            //{
-            //    mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
-            //    mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
-            //}
-            //g.SetLineWidth(2.0f);
-            //UIColor.Black.SetFill();
-            ////var path = new CGPath();
-            //g.AddPath(path);
-            //g.AddPath(mouthPath);
-            //g.DrawPath(CGPathDrawingMode.FillStroke);
+            }
+            else
+            {
+                path.AddQuadCurveToPoint(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
+                path.AddQuadCurveToPoint(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
+            }
+
+            UIColor.Black.SetFill();
+            g.AddPath(path);
+            g.DrawPath(CGPathDrawingMode.Fill);
 
         }
     }

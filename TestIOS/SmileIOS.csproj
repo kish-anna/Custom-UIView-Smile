@@ -146,5 +146,11 @@
           <DependentUpon>HappyFaceView.cs</DependentUpon>
         </Compile>
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Custom View\Portable.csproj">
+        <Project>{4A0FBEE7-F2EE-4C67-B94E-BD4CE34AB007}</Project>
+        <Name>Portable</Name>
+      </ProjectReference>
+    </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

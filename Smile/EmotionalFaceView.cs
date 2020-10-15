@@ -72,8 +72,7 @@ namespace Smile
             paint.SetStyle(Paint.Style.Fill);
 
             RectF leftEyeRect = new RectF(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
-            Console.WriteLine($"{size * 0.32f}, {size * 0.23f}, {size * 0.43f}, {size * 0.50f}");
-            Console.WriteLine($"{size}");
+            
             canvas.DrawOval(leftEyeRect, paint);
 
             RectF rightEyeRect = new RectF(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f);

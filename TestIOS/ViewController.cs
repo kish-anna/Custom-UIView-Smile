@@ -15,12 +15,14 @@ namespace TestIOS
 
             HappyFace.TouchUpInside += delegate
             {
+                BigSmile.HappinessState = Smile.StateButton.Happy;
                 Console.WriteLine("happy");
                 
             };
             SadFace.TouchUpInside += delegate
             {
-                Console.WriteLine("happy");
+                BigSmile.HappinessState = Smile.StateButton.Sad;
+                Console.WriteLine("sad");
 
             };
 
