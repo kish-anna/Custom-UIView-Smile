@@ -67,9 +67,11 @@ namespace SmileIOS
         public override void Draw(CGRect rect)
 
         {
+            
             base.Draw(rect);
             this.AddSubview(drawHeaderView());
             this.AddSubview(drawHelloLabel());
+            
 
            using (CGContext g = UIGraphics.GetCurrentContext())
             {
@@ -82,7 +84,7 @@ namespace SmileIOS
         }
         private void drawFaceBackground(CGContext g)
         {
-            nfloat radius = size / 2f;
+            nfloat radius = size / 2f - 16f;
 
             g.SetLineWidth(4.0f);
             UIColor.Yellow.SetFill();
@@ -90,7 +92,8 @@ namespace SmileIOS
 
             // create geometry
             var path = new CGPath();
-            path.AddArc(Bounds.GetMidX(), Bounds.GetMidY() - 90, size / 2f - 20f, 0, 2.0f * (float)Math.PI, true);
+            //canvas.DrawCircle(size / 2f, size / 2f, radius, paint);
+            path.AddArc(Bounds.GetMidX(), Bounds.GetMidY() - 90, radius, 0, 2.0f * (float)Math.PI, true);
 
             // add geometry to graphics context and draw 
             g.AddPath(path);
@@ -98,8 +101,11 @@ namespace SmileIOS
 
         }
 
-        private void drawHappyFace(CGContext g)
+        private UIView drawHappyFace(CGContext g)
         {
+
+            UIView happyFace = new UIImageView(new RectangleF(50, 150, size / 16f, size / 16f));
+            happyFace.BackgroundColor = UIColor.Red;
             nfloat radius = size / 16f;
 
             g.SetLineWidth(4.0f);
@@ -114,6 +120,10 @@ namespace SmileIOS
             // add geometry to graphics context and draw 
             g.AddPath(path);
             g.DrawPath(CGPathDrawingMode.FillStroke);
+
+            
+
+            return happyFace;
         }
 
         private void drawSadFace(CGContext g)
@@ -142,6 +152,8 @@ namespace SmileIOS
 
             //CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
             CGRect leftEyeRect = new CGRect(130, 240, size * 0.1f, size * 0.25f);
+            Console.WriteLine($"{size}");
+
             g.AddPath(path);
             g.AddEllipseInRect(leftEyeRect);
             g.DrawPath(CGPathDrawingMode.FillStroke);
@@ -157,12 +169,15 @@ namespace SmileIOS
         private void drawMouth(CGContext g)
         {
             //mouthPath.Reset();
-            mouthPath.MoveToPoint(size * 0.22f, size * 0.7f);
+            //mouthPath.MoveToPoint(size * 0.22f, size * 0.7f);
+            mouthPath.MoveToPoint(size * 0.22f, size * 1f);
 
-            if (HappinessState == StateButton.Happy)
+            if (HappinessState == StateButton.Happy) 
             {
-                mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
-                mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
+                //mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
+                //mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
+                mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 1.1f, size * 0.78f, size * 1f);
+                mouthPath.AddQuadCurveToPoint(size * 0.50f, size * 1.2f, size * 0.22f, size * 1f);
 
             }
             else
