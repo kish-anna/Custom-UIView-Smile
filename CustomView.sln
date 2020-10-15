@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portable", "Custom View\Por
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smile", "Smile\Smile.csproj", "{0C1C5966-3537-421A-8F50-5877442634F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmileIOS", "SmileIOS\SmileIOS.csproj", "{51754767-2C9B-41F6-A6C3-EEBCA03F8327}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIOS", "TestIOS\TestIOS.csproj", "{D2B231F5-FF55-4AB8-89D8-D258A79E62A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmileIOS", "TestIOS\SmileIOS.csproj", "{D2B231F5-FF55-4AB8-89D8-D258A79E62A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,18 +49,6 @@ Global
 		{0C1C5966-3537-421A-8F50-5877442634F7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{0C1C5966-3537-421A-8F50-5877442634F7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{0C1C5966-3537-421A-8F50-5877442634F7}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Debug|iPhone.Build.0 = Debug|iPhone
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Release|iPhone.ActiveCfg = Release|iPhone
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Release|iPhone.Build.0 = Release|iPhone
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{51754767-2C9B-41F6-A6C3-EEBCA03F8327}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{D2B231F5-FF55-4AB8-89D8-D258A79E62A5}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
 		{D2B231F5-FF55-4AB8-89D8-D258A79E62A5}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
 		{D2B231F5-FF55-4AB8-89D8-D258A79E62A5}.Debug|iPhone.ActiveCfg = Debug|iPhone

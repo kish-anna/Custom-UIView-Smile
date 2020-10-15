@@ -1,18 +1,17 @@
 using CoreGraphics;
-using Foundation;
 using System;
-using System.Drawing;
 using UIKit;
 
 namespace TestIOS
 {
     public partial class HappyFaceView : UIControl
     {
-        CGPath path;
-        float size = Math.Min((float)UIScreen.MainScreen.Bounds.Height, (float)UIScreen.MainScreen.Bounds.Width);
+
+        float size = 0;
         private CGPath mouthPath = new CGPath();
         public HappyFaceView (IntPtr handle) : base (handle)
         {
+            size = Math.Min((float)this.Bounds.Height, (float)this.Bounds.Width);
         }
         public override void Draw(CGRect rect)
 
@@ -22,34 +21,27 @@ namespace TestIOS
 
             using (CGContext g = UIGraphics.GetCurrentContext())
             {
-                
-                drawHappyFace(g);
-                
+
+                drawFaceBackground(g);
+
             }
         }
-        private UIView drawHappyFace(CGContext g)
+        
+        private void drawFaceBackground(CGContext g)
         {
-
-            UIView happyFace = new UIImageView(new RectangleF(50, 150, size / 16f, size / 16f));
-            happyFace.BackgroundColor = UIColor.Red;
-            nfloat radius = size / 16f;
-
-            g.SetLineWidth(4.0f);
+            nfloat radius = (float)Math.Truncate(size / 2f) - 1;
+            g.SetLineWidth(2.0f);
             UIColor.Red.SetFill();
             UIColor.White.SetStroke();
 
             // create geometry
             var path = new CGPath();
-            path.AddArc(50, 150, radius, 0, 2.0f * (float)Math.PI, true);
-            Console.WriteLine($"{Bounds.GetMidX()}, {Bounds.GetMidY()}");
+            //canvas.DrawCircle(size / 2f, size / 2f, radius, paint);
+            path.AddArc(Bounds.GetMidX(), Bounds.GetMidY(), radius, 0, 2.0f * (float)Math.PI, true);
 
             // add geometry to graphics context and draw 
             g.AddPath(path);
             g.DrawPath(CGPathDrawingMode.FillStroke);
-
-
-
-            return happyFace;
         }
     }
 

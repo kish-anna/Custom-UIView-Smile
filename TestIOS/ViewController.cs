@@ -20,7 +20,7 @@ namespace TestIOS
             };
             SadFace.TouchUpInside += delegate
             {
-                Console.WriteLine("sad");
+                Console.WriteLine("happy");
 
             };
 

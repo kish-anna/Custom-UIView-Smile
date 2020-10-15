@@ -31,7 +31,7 @@ namespace TestIOS
 
         private void drawFaceBackground(CGContext g)
         {
-            nfloat radius = size / 2f;
+            nfloat radius = (float)Math.Truncate(size / 2f) - 1;
 
             g.SetLineWidth(2.0f);
             UIColor.Yellow.SetFill();
