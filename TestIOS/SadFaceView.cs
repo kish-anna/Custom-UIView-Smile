@@ -23,6 +23,7 @@ namespace TestIOS
 
                 drawFaceBackground(g);
                 drawMouth(g);
+                drawEyes(g);
             }
         }
 
@@ -41,6 +42,24 @@ namespace TestIOS
 
             // add geometry to graphics context and draw 
             g.AddPath(path);
+            g.DrawPath(CGPathDrawingMode.FillStroke);
+        }
+
+        private void drawEyes(CGContext g)
+        {
+            g.SetLineWidth(4.0f);
+            UIColor.Black.SetFill();
+            var path = new CGPath();
+
+            CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.1f, size * 0.25f);
+            g.AddPath(path);
+            g.AddEllipseInRect(leftEyeRect);
+            g.DrawPath(CGPathDrawingMode.FillStroke);
+
+            var path1 = new CGPath();
+            CGRect rightEyeRect = new CGRect(size * 0.57f, size * 0.23f, size * 0.1f, size * 0.25f);
+            g.AddPath(path1);
+            g.AddEllipseInRect(rightEyeRect);
             g.DrawPath(CGPathDrawingMode.FillStroke);
         }
 
