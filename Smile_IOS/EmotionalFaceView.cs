@@ -36,11 +36,9 @@ namespace Smile_IOS
             {
                 _happinessState = value;
                 SetNeedsDisplay();
-
             }
         }
         private StateButton _happinessState;
-
 
         public EmotionalFaceView(IntPtr handle) : base(handle)
         {
@@ -63,15 +61,12 @@ namespace Smile_IOS
         public override void Draw(CGRect rect)
         {
             base.Draw(rect);
-            Console.WriteLine("draw");
             using (CGContext g = UIGraphics.GetCurrentContext())
             {
                 drawFaceBackground(g);
                 drawEyes(g);
                 drawMouth(g);
             }
-
-
         }
 
         private void drawFaceBackground(CGContext g)
@@ -91,6 +86,7 @@ namespace Smile_IOS
             g.AddPath(path);
             g.DrawPath(CGPathDrawingMode.FillStroke);
         }
+
         private void drawEyes(CGContext g)
         {
             g.SetLineWidth(4.0f);
@@ -104,7 +100,7 @@ namespace Smile_IOS
             g.DrawPath(CGPathDrawingMode.FillStroke);
 
             var path1 = new CGPath();
-            
+
             CGRect rightEyeRect = new CGRect(size * 0.57f, size * 0.23f, size * 0.1f, size * 0.25f);
             g.AddPath(path1);
             g.AddEllipseInRect(rightEyeRect);
@@ -114,14 +110,11 @@ namespace Smile_IOS
         private void drawMouth(CGContext g)
         {
             var path = new CGPath();
-
             path.MoveToPoint(size * 0.22f, size * 0.70f);
-
             if (HappinessState == StateButton.Happy)
             {
                 path.AddQuadCurveToPoint(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
                 path.AddQuadCurveToPoint(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
-
             }
             else
             {
@@ -130,9 +123,9 @@ namespace Smile_IOS
             }
 
             mouthColor.SetFill();
+
             g.AddPath(path);
             g.DrawPath(CGPathDrawingMode.Fill);
-
         }
     }
 }
