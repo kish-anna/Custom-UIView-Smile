@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace TestIOS
+namespace Smile_IOS
 {
     public class Application
     {

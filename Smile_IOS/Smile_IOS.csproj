@@ -3,12 +3,12 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-        <ProjectGuid>{D2B231F5-FF55-4AB8-89D8-D258A79E62A5}</ProjectGuid>
+        <ProjectGuid>{CA002C07-9AD5-412F-B86E-78784B291FD4}</ProjectGuid>
         <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
         <TemplateGuid>{edc1b0fa-90cd-4038-8fad-98fe74adb368}</TemplateGuid>
         <OutputType>Exe</OutputType>
-        <RootNamespace>TestIOS</RootNamespace>
-        <AssemblyName>TestIOS</AssemblyName>
+        <RootNamespace>Smile_IOS</RootNamespace>
+        <AssemblyName>Smile_IOS</AssemblyName>
         <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
         <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
         <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
@@ -134,17 +134,6 @@
             <DependentUpon>ViewController.cs</DependentUpon>
         </Compile>
         <Compile Include="EmotionalFaceView.cs" />
-        <Compile Include="EmotionalFaceView.designer.cs">
-          <DependentUpon>EmotionalFaceView.cs</DependentUpon>
-        </Compile>
-        <Compile Include="SadFaceView.cs" />
-        <Compile Include="SadFaceView.designer.cs">
-          <DependentUpon>SadFaceView.cs</DependentUpon>
-        </Compile>
-        <Compile Include="HappyFaceView.cs" />
-        <Compile Include="HappyFaceView.designer.cs">
-          <DependentUpon>HappyFaceView.cs</DependentUpon>
-        </Compile>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Custom View\Portable.csproj">

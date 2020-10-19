@@ -1,18 +1,34 @@
-using System;
+﻿using System;
 using UIKit;
 using CoreGraphics;
 using Smile;
+using Foundation;
+using System.ComponentModel;
 
-namespace TestIOS
+namespace Smile_IOS
 {
-    public partial class EmotionalFaceView : UIView
+    [Register("EmotionalFaceView"), DesignTimeVisible(true)]
+    public class EmotionalFaceView : UIControl
     {
         float size = 0;
 
-        
+        [Export("BGColor"), Browsable(true)]
+        public UIColor BGColor { get => bgcolor; set => bgcolor = value; }
+        private UIColor bgcolor;
 
-        private StateButton _happinessState;
+        [Export("EyesColor"), Browsable(true)]
+        public UIColor EyesColor { get => eyesColor; set => eyesColor = value; }
+        private UIColor eyesColor;
 
+        [Export("MouthColor"), Browsable(true)]
+        public UIColor MouthColor { get => mouthColor; set => mouthColor = value; }
+        private UIColor mouthColor;
+
+        [Export("BorderColor"), Browsable(true)]
+        public UIColor BorderColor { get => borderColor; set => borderColor = value; }
+        private UIColor borderColor;
+
+        [Export("HappinessState"), Browsable(true)]
         public StateButton HappinessState
         {
             get => _happinessState;
@@ -20,16 +36,28 @@ namespace TestIOS
             {
                 _happinessState = value;
                 SetNeedsDisplay();
-               
 
             }
         }
+        private StateButton _happinessState;
 
 
-        public EmotionalFaceView (IntPtr handle) : base (handle)
+        public EmotionalFaceView(IntPtr handle) : base(handle)
+        {
+            Initialize();
+        }
+        public EmotionalFaceView()
+        {
+            Initialize();
+        }
+
+        void Initialize()
         {
             size = Math.Min((float)this.Bounds.Height, (float)this.Bounds.Width);
-            
+            bgcolor = UIColor.Clear;
+            eyesColor = UIColor.Clear;
+            mouthColor = UIColor.Clear;
+            borderColor = UIColor.Clear;
         }
 
         public override void Draw(CGRect rect)
@@ -39,11 +67,11 @@ namespace TestIOS
             using (CGContext g = UIGraphics.GetCurrentContext())
             {
                 drawFaceBackground(g);
-                //drawEyes(g);
+                drawEyes(g);
                 drawMouth(g);
             }
 
-            
+
         }
 
         private void drawFaceBackground(CGContext g)
@@ -51,8 +79,8 @@ namespace TestIOS
             nfloat radius = (float)Math.Truncate(size / 2f) - 1;
 
             g.SetLineWidth(2.0f);
-            UIColor.Yellow.SetFill();
-            UIColor.Black.SetStroke();
+            bgcolor.SetFill();
+            borderColor.SetStroke();
 
             // create geometry
             var path = new CGPath();
@@ -66,20 +94,18 @@ namespace TestIOS
         private void drawEyes(CGContext g)
         {
             g.SetLineWidth(4.0f);
-            UIColor.Black.SetFill();
+            eyesColor.SetFill();
             var path = new CGPath();
 
-            //CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
-            CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
-            
+            CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.1f, size * 0.25f);
 
             g.AddPath(path);
             g.AddEllipseInRect(leftEyeRect);
             g.DrawPath(CGPathDrawingMode.FillStroke);
 
             var path1 = new CGPath();
-            //CGRect rightEyeRect = new CGRect(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f);
-            CGRect rightEyeRect = new CGRect(235, 240, size * 0.1f, size * 0.25f);
+            
+            CGRect rightEyeRect = new CGRect(size * 0.57f, size * 0.23f, size * 0.1f, size * 0.25f);
             g.AddPath(path1);
             g.AddEllipseInRect(rightEyeRect);
             g.DrawPath(CGPathDrawingMode.FillStroke);
@@ -103,7 +129,7 @@ namespace TestIOS
                 path.AddQuadCurveToPoint(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
             }
 
-            UIColor.Black.SetFill();
+            mouthColor.SetFill();
             g.AddPath(path);
             g.DrawPath(CGPathDrawingMode.Fill);
 

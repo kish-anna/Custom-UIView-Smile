@@ -9,22 +9,22 @@ using System;
 using System.CodeDom.Compiler;
 using UIKit;
 
-namespace TestIOS
+namespace Smile_IOS
 {
     [Register ("ViewController")]
     partial class ViewController
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TestIOS.EmotionalFaceView BigSmile { get; set; }
+        Smile_IOS.EmotionalFaceView BigSmile { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TestIOS.HappyFaceView HappyFace { get; set; }
+        Smile_IOS.EmotionalFaceView HappyFaceView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        TestIOS.SadFaceView SadFace { get; set; }
+        Smile_IOS.EmotionalFaceView SadFaceView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
@@ -33,14 +33,14 @@ namespace TestIOS
                 BigSmile = null;
             }
 
-            if (HappyFace != null) {
-                HappyFace.Dispose ();
-                HappyFace = null;
+            if (HappyFaceView != null) {
+                HappyFaceView.Dispose ();
+                HappyFaceView = null;
             }
 
-            if (SadFace != null) {
-                SadFace.Dispose ();
-                SadFace = null;
+            if (SadFaceView != null) {
+                SadFaceView.Dispose ();
+                SadFaceView = null;
             }
         }
     }

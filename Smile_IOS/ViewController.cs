@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Foundation;
+using System;
 using UIKit;
 
-namespace TestIOS
+namespace Smile_IOS
 {
     public partial class ViewController : UIViewController
     {
@@ -12,20 +13,19 @@ namespace TestIOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-            HappyFace.TouchUpInside += delegate
+            // Perform any additional setup after loading the view, typically from a nib.
+            HappyFaceView.TouchUpInside += delegate
             {
                 BigSmile.HappinessState = Smile.StateButton.Happy;
                 Console.WriteLine("happy");
-                
+
             };
-            SadFace.TouchUpInside += delegate
+            SadFaceView.TouchUpInside += delegate
             {
                 BigSmile.HappinessState = Smile.StateButton.Sad;
                 Console.WriteLine("sad");
 
             };
-
         }
 
         public override void DidReceiveMemoryWarning()

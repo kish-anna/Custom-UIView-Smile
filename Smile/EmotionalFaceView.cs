@@ -120,6 +120,9 @@ namespace Smile
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            Console.WriteLine($"OnMeasure - {widthMeasureSpec}, {heightMeasureSpec}");
+
             size = Math.Min(MeasuredWidth, MeasuredHeight);
             SetMeasuredDimension((int)size, (int)size);
         }        
