@@ -4,11 +4,14 @@ using CoreGraphics;
 using Smile;
 using Foundation;
 using System.ComponentModel;
+using SkiaSharp.Views.iOS;
+using CustomView;
+using SkiaSharp;
 
 namespace Smile_IOS
 {
     [Register("EmotionalFaceView"), DesignTimeVisible(true)]
-    public class EmotionalFaceView : UIControl
+    public class EmotionalFaceView : SKCanvasView
     {
         float size = 0;
 
@@ -40,6 +43,8 @@ namespace Smile_IOS
         }
         private StateButton _happinessState;
 
+        private FaceView _presenter;
+
         public EmotionalFaceView(IntPtr handle) : base(handle)
         {
             Initialize();
@@ -56,76 +61,83 @@ namespace Smile_IOS
             eyesColor = UIColor.Clear;
             mouthColor = UIColor.Clear;
             borderColor = UIColor.Clear;
+             _presenter = new FaceView(size, bgcolor.ToSKColor(), BorderColor.ToSKColor());
+            
+
         }
 
-        public override void Draw(CGRect rect)
+        protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
-            base.Draw(rect);
-            using (CGContext g = UIGraphics.GetCurrentContext())
+            base.OnPaintSurface(e);
+            var g = e.Surface.Canvas;
+             DrawFaceBackground(g);
+             DrawEyes(g);
+             DrawMouth(g);
+        }
+        private void DrawFaceBackground(SKCanvas c)
+        {
+            var paintStroke = new SKPaint
             {
-                drawFaceBackground(g);
-                drawEyes(g);
-                drawMouth(g);
-            }
+                Style = SKPaintStyle.Stroke,
+                //Color = _presenter.StrokeColor,
+                Color = BorderColor.ToSKColor(),
+                StrokeWidth = 2.0f
+            };
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                //Color = _presenter.FillColor
+                Color = bgcolor.ToSKColor()
+            };
+            var path = new SKPath();
+            //path.AddArc(Bounds.GetMidX(), Bounds.GetMidY(), radius, 0, 2.0f * (float)Math.PI, true);           
+            path.AddCircle((float)Bounds.GetMidX()/2, (float)Bounds.GetMidY()/2, (float)_presenter.Radius, SKPathDirection.Clockwise);
+            
+            
+           c.DrawPath(path, paintFill);
+           c.DrawPath(path, paintStroke);
+        }
+        private void DrawEyes(SKCanvas c)
+        {         
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = EyesColor.ToSKColor()
+            };
+           
+            var path = new SKPath();        
+            SKRect leftEyeRect = new SKRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
+            path.AddOval(leftEyeRect);
+            c.DrawOval(leftEyeRect, paintFill);
+    
+            var path1 = new SKPath();          
+            SKRect rightEyeRect = new SKRect(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f);
+            path1.AddOval(rightEyeRect);
+            c.DrawOval(rightEyeRect, paintFill);         
         }
 
-        private void drawFaceBackground(CGContext g)
+        private void DrawMouth(SKCanvas c)
         {
-            nfloat radius = (float)Math.Truncate(size / 2f) - 1;
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = MouthColor.ToSKColor()
+            };
 
-            g.SetLineWidth(2.0f);
-            bgcolor.SetFill();
-            borderColor.SetStroke();
+            var path = new SKPath();
+            path.MoveTo(size * 0.22f, size * 0.70f);
 
-            // create geometry
-            var path = new CGPath();
-            //canvas.DrawCircle(size / 2f, size / 2f, radius, paint);
-            path.AddArc(Bounds.GetMidX(), Bounds.GetMidY(), radius, 0, 2.0f * (float)Math.PI, true);
-
-            // add geometry to graphics context and draw 
-            g.AddPath(path);
-            g.DrawPath(CGPathDrawingMode.FillStroke);
-        }
-
-        private void drawEyes(CGContext g)
-        {
-            g.SetLineWidth(4.0f);
-            eyesColor.SetFill();
-            var path = new CGPath();
-
-            CGRect leftEyeRect = new CGRect(size * 0.32f, size * 0.23f, size * 0.1f, size * 0.25f);
-
-            g.AddPath(path);
-            g.AddEllipseInRect(leftEyeRect);
-            g.DrawPath(CGPathDrawingMode.FillStroke);
-
-            var path1 = new CGPath();
-
-            CGRect rightEyeRect = new CGRect(size * 0.57f, size * 0.23f, size * 0.1f, size * 0.25f);
-            g.AddPath(path1);
-            g.AddEllipseInRect(rightEyeRect);
-            g.DrawPath(CGPathDrawingMode.FillStroke);
-        }
-
-        private void drawMouth(CGContext g)
-        {
-            var path = new CGPath();
-            path.MoveToPoint(size * 0.22f, size * 0.70f);
             if (HappinessState == StateButton.Happy)
             {
-                path.AddQuadCurveToPoint(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
-                path.AddQuadCurveToPoint(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);              
             }
             else
             {
-                path.AddQuadCurveToPoint(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
-                path.AddQuadCurveToPoint(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);       
             }
-
-            mouthColor.SetFill();
-
-            g.AddPath(path);
-            g.DrawPath(CGPathDrawingMode.Fill);
+            c.DrawPath(path, paintFill);         
         }
     }
 }

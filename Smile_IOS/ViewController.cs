@@ -13,8 +13,8 @@ namespace Smile_IOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            // Perform any additional setup after loading the view, typically from a nib.
-            HappyFaceView.TouchUpInside += delegate
+           
+          /*  HappyFaceView.TouchUpInside += delegate
             {
                 BigSmile.HappinessState = Smile.StateButton.Happy;
                 Console.WriteLine("happy");
@@ -25,7 +25,7 @@ namespace Smile_IOS
                 BigSmile.HappinessState = Smile.StateButton.Sad;
                 Console.WriteLine("sad");
 
-            };
+            };*/
         }
 
         public override void DidReceiveMemoryWarning()
