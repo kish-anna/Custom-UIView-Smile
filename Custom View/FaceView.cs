@@ -1,23 +1,21 @@
-﻿using System;
-using SkiaSharp;
-using Smile;
+﻿using SkiaSharp;
 
-namespace CustomView
+namespace Smile
 {
     public class FaceView : IEmotionalView
     {
-        public FaceView(float size, SKColor fillColor, SKColor strokeColor, StateButton state = StateButton.Happy)
+        public FaceView(float size, SKColor fillColor, SKColor strokeColor, SKColor eyesColor, SKColor mouthColor)
         {
             FillColor = fillColor;
             StrokeColor = strokeColor;
-            CurrentState = state;
+            EyesColor = eyesColor;
+            MouthColor = mouthColor;
             Size = size;
+            
 
         }
 
         private float _size;
-        private StateButton _currentState;
-
         public float Size
         {
             get => _size;
@@ -25,25 +23,54 @@ namespace CustomView
             {
                 _size = value;
                 Radius = _size / 2;
-                LeftEyeRect = new SKRect();
+                LeftEyeRect = new SKRect(_size * 0.32f, _size * 0.23f, _size * 0.43f, _size * 0.50f);
+                RightEyeRect = new SKRect(_size * 0.57f, _size * 0.23f, _size * 0.68f, _size * 0.50f);
+                FacePath = GetFacePath();
+                //Mouth = GetMouth(_size, _happinessState);
+
             }
+        }
+
+        public SKPath GetFacePath()
+        {
+            var path = new SKPath();
+            path.AddCircle(Radius, Radius, Radius, SKPathDirection.Clockwise);
+
+            return path;
+        }
+
+        public SKPath GetHappyMouth()
+        {
+            var path = new SKPath();
+            path.MoveTo(_size * 0.22f, _size * 0.70f);
+
+            path.QuadTo(_size * 0.50f, _size * 0.80f, _size * 0.78f, _size * 0.70f);
+            path.QuadTo(_size * 0.50f, _size * 0.90f, _size * 0.22f, _size * 0.70f);
+
+            return path;
+        }
+
+        public SKPath GetSadMouth()
+        {
+            var path = new SKPath();
+            path.MoveTo(_size * 0.22f, _size * 0.70f);
+
+            path.QuadTo(_size * 0.50f, _size * 0.50f, _size * 0.78f, _size * 0.70f);
+            path.QuadTo(_size * 0.50f, _size * 0.60f, _size * 0.22f, _size * 0.70f);
+
+            return path;
         }
 
         public SKRect LeftEyeRect { get; private set; }
-        public StateButton CurrentState
-        {
-            get => _currentState;
-            set
-            {
-                _currentState = value;
-                ChangeState?.Invoke();
-            }
-        }
+        public SKRect RightEyeRect { get; private set; }
+        public SKPath FacePath { get; private set; }
 
         public float Radius { get; private set; }
-        public event Action ChangeState;
         public SKColor FillColor { get; set; }
         public SKColor StrokeColor { get; set; }
+        public SKColor EyesColor { get; set; }
+        public SKColor MouthColor { get; set; }
+        
     }
 }
 

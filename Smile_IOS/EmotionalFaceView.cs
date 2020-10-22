@@ -1,11 +1,9 @@
 ﻿using System;
 using UIKit;
-using CoreGraphics;
 using Smile;
 using Foundation;
 using System.ComponentModel;
 using SkiaSharp.Views.iOS;
-using CustomView;
 using SkiaSharp;
 
 namespace Smile_IOS
@@ -15,22 +13,17 @@ namespace Smile_IOS
     {
         float size = 0;
 
-
         [Export("BGColor"), Browsable(true)]
-        public UIColor BGColor { get => bgcolor; set => bgcolor = value; }
-        private UIColor bgcolor;
+        public UIColor BGColor { get; set; }
 
         [Export("EyesColor"), Browsable(true)]
-        public UIColor EyesColor { get => eyesColor; set => eyesColor = value; }
-        private UIColor eyesColor;
+        public UIColor EyesColor { get; set; }
 
         [Export("MouthColor"), Browsable(true)]
-        public UIColor MouthColor { get => mouthColor; set => mouthColor = value; }
-        private UIColor mouthColor;
+        public UIColor MouthColor { get; set; }
 
         [Export("BorderColor"), Browsable(true)]
-        public UIColor BorderColor { get => borderColor; set => borderColor = value; }
-        private UIColor borderColor;
+        public UIColor BorderColor { get; set; }
 
         [Export("HappinessState"), Browsable(true)]
         public StateButton HappinessState
@@ -58,17 +51,16 @@ namespace Smile_IOS
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
-            _presenter = new FaceView(size, bgcolor.ToSKColor(), BorderColor.ToSKColor());
-            this.BackgroundColor = UIColor.Clear;
+            _presenter = new FaceView(size, BGColor.ToSKColor(), BorderColor.ToSKColor(),
+                EyesColor.ToSKColor(), MouthColor.ToSKColor());
+            BackgroundColor = UIColor.Clear;
         }
         void Initialize()
         {
-            // size = Math.Min((float)this.Bounds.Height, (float)this.Bounds.Width);
-            bgcolor = UIColor.Clear;
-            eyesColor = UIColor.Clear;
-            mouthColor = UIColor.Clear;
-            borderColor = UIColor.Clear;
-
+            BGColor = UIColor.Clear;
+            EyesColor = UIColor.Clear;
+            MouthColor = UIColor.Clear;
+            BorderColor = UIColor.Clear;
         }
 
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
@@ -89,37 +81,27 @@ namespace Smile_IOS
             {
                 Style = SKPaintStyle.Stroke,
                 Color = _presenter.StrokeColor,
-                //Color = BorderColor.ToSKColor(),
                 StrokeWidth = 2.0f
             };
             var paintFill = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
                 Color = _presenter.FillColor
-                //Color = bgcolor.ToSKColor()
             };
-            var path = new SKPath();
-            path.AddCircle(_presenter.Radius, _presenter.Radius, (float)_presenter.Radius, SKPathDirection.Clockwise);
-            c.DrawPath(path, paintFill);
-            c.DrawPath(path, paintStroke);
+
+            c.DrawPath(_presenter.FacePath, paintFill);
+            c.DrawPath(_presenter.FacePath, paintStroke);
         }
         private void DrawEyes(SKCanvas c)
         {
             var paintFill = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
-                Color = EyesColor.ToSKColor()
+                Color = _presenter.EyesColor
             };
 
-            var path = new SKPath();
-            SKRect leftEyeRect = new SKRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
-            path.AddOval(leftEyeRect);
-            c.DrawOval(leftEyeRect, paintFill);
-
-            var path1 = new SKPath();
-            SKRect rightEyeRect = new SKRect(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f);
-            path1.AddOval(rightEyeRect);
-            c.DrawOval(rightEyeRect, paintFill);
+            c.DrawOval(_presenter.LeftEyeRect, paintFill);
+            c.DrawOval(_presenter.RightEyeRect, paintFill);
         }
 
         private void DrawMouth(SKCanvas c)
@@ -127,23 +109,18 @@ namespace Smile_IOS
             var paintFill = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
-                Color = MouthColor.ToSKColor()
+                Color = _presenter.MouthColor
             };
 
-            var path = new SKPath();
-            path.MoveTo(size * 0.22f, size * 0.70f);
-
-            if (HappinessState == StateButton.Happy)
+            if(HappinessState == StateButton.Happy)
             {
-                path.QuadTo(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
-                path.QuadTo(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
+                c.DrawPath(_presenter.GetHappyMouth(), paintFill);
             }
             else
             {
-                path.QuadTo(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
-                path.QuadTo(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
+                c.DrawPath(_presenter.GetSadMouth(), paintFill);
             }
-            c.DrawPath(path, paintFill);
+            
         }
     }
 }
