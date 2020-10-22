@@ -14,40 +14,47 @@ namespace Smile_IOS
         {
             base.ViewDidLoad();
 
+            //HappyFaceView.UserInteractionEnabled = true;
+            //UITapGestureRecognizer tapGesture = new UITapGestureRecognizer(Tap);
+            //tapGesture.NumberOfTapsRequired = 1;
+            //HappyFaceView.AddGestureRecognizer(tapGesture);
+            //SadFaceView.UserInteractionEnabled = true;
+            //UITapGestureRecognizer tapGesture1 = new UITapGestureRecognizer(Tap1);
+            //tapGesture1.NumberOfTapsRequired = 1;
+            //SadFaceView.AddGestureRecognizer(tapGesture1);
+
             HappyFaceView.UserInteractionEnabled = true;
-            UITapGestureRecognizer tapGesture = new UITapGestureRecognizer(Tap);
-            tapGesture.NumberOfTapsRequired = 1;
-            HappyFaceView.AddGestureRecognizer(tapGesture);
-            
+            HappyFaceView.AddGestureRecognizer(GetNewGesture(HappyTapHandle));
 
             SadFaceView.UserInteractionEnabled = true;
-            UITapGestureRecognizer tapGesture1 = new UITapGestureRecognizer(Tap1);
-            tapGesture1.NumberOfTapsRequired = 1;
-            SadFaceView.AddGestureRecognizer(tapGesture1);
-           
-
-            /*  HappyFaceView.TouchUpInside += delegate
-              {
-                  BigSmile.HappinessState = Smile.StateButton.Happy;
-                  Console.WriteLine("happy");
-
-              };
-              SadFaceView.TouchUpInside += delegate
-              {
-                  BigSmile.HappinessState = Smile.StateButton.Sad;
-                  Console.WriteLine("sad");
-
-              };*/
+            SadFaceView.AddGestureRecognizer(GetNewGesture(SadTapHandle));
         }
-        void Tap(UITapGestureRecognizer tap1)
-        {
 
+        void HappyTapHandle(UITapGestureRecognizer tap)
+        {
             BigSmile.HappinessState = Smile.StateButton.Happy;
         }
-        void Tap1(UITapGestureRecognizer tap1)
+        void SadTapHandle(UITapGestureRecognizer tap)
         {
             BigSmile.HappinessState = Smile.StateButton.Sad;
         }
+        UITapGestureRecognizer GetNewGesture(Action<UITapGestureRecognizer> action)
+        {
+            UITapGestureRecognizer g = new UITapGestureRecognizer(action);
+            g.NumberOfTapsRequired = 1;
+
+            return g;
+        }
+
+        //void Tap(UITapGestureRecognizer tap1)
+        //{
+        //    BigSmile.HappinessState = Smile.StateButton.Happy;
+        //}
+        //void Tap1(UITapGestureRecognizer tap1)
+        //{
+        //    BigSmile.HappinessState = Smile.StateButton.Sad;
+        //}
+
         public override void DidReceiveMemoryWarning()
         {
             base.DidReceiveMemoryWarning();

@@ -4,10 +4,12 @@ using Android.Graphics;
 using Android.Util;
 using Android.Views;
 using CustomView;
+using SkiaSharp;
+using SkiaSharp.Views.Android;
 
 namespace Smile
 {
-    public class EmotionalFaceView : View
+    public class EmotionalFaceView : SKCanvasView
     {
         Color faceColor = new Color(CustomSettings.DefaultFaceColor);
         Color eyesColor = new Color(CustomSettings.DefaultEyesColor);
@@ -15,10 +17,6 @@ namespace Smile
         Color borderColor = new Color(CustomSettings.DefaultBorderColor);
         float borderWidth = CustomSettings.DefaultBorderWidth;
 
-        
-
-        private Path mouthPath = new Path();
-        Paint paint = new Paint(PaintFlags.AntiAlias);
         float size = 0;
 
         public static IAttributeSet Attrs;
@@ -56,76 +54,94 @@ namespace Smile
             borderWidth = typedArray.GetDimension(Resource.Styleable.EmotionalFaceView_borderWidth, CustomSettings.DefaultBorderWidth);
 
             typedArray.Recycle();
-        }       
+        }
 
-        protected override void OnDraw(Canvas canvas)
-        {            
-            base.OnDraw(canvas);            
+        protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
+        {
+            base.OnPaintSurface(e);
+
+            var canvas = e.Surface.Canvas;
+            size = Math.Min(e.Info.Width, e.Info.Height);
+
             drawFaceBackground(canvas);
-            drawEyes(canvas);            
+            drawEyes(canvas);
             drawMouth(canvas);
         }
 
-        private void drawEyes(Canvas canvas)
+        private void drawFaceBackground(SKCanvas c)
         {
-            paint.Color = eyesColor;
-            paint.SetStyle(Paint.Style.Fill);
+            var paintStroke = new SKPaint
+            {
+                Style = SKPaintStyle.Stroke,
+                Color = borderColor.ToSKColor(),
+                StrokeWidth = 2.0f
+            };
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = faceColor.ToSKColor(),
+            };
 
-            RectF leftEyeRect = new RectF(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
-            
-            canvas.DrawOval(leftEyeRect, paint);
+            var radius = size / 2;
 
-            RectF rightEyeRect = new RectF(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f);
-            canvas.DrawOval(rightEyeRect, paint);
+            var path = new SKPath();
+            path.AddCircle(radius, radius, radius, SKPathDirection.Clockwise);
+            c.DrawPath(path, paintFill);
+            c.DrawPath(path, paintStroke);
         }
 
-        private void drawFaceBackground(Canvas canvas)
+        private void drawEyes(SKCanvas c)
         {
-            paint.Color = faceColor;
-            paint.SetStyle(Paint.Style.Fill);
 
-            float radius = size / 2f;
-            canvas.DrawCircle(size / 2f, size / 2f, radius, paint);
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = eyesColor.ToSKColor()
+            };
 
-            paint.Color = borderColor;
-            paint.SetStyle(Paint.Style.Stroke);
-            paint.StrokeWidth = borderWidth;
+            var path = new SKPath();
+            SKRect leftEyeRect = new SKRect(size * 0.32f, size * 0.23f, size * 0.43f, size * 0.50f);
+            path.AddOval(leftEyeRect);
+            c.DrawOval(leftEyeRect, paintFill);
 
-            canvas.DrawCircle(size / 2f, size / 2f, radius - borderWidth, paint);
+            var path1 = new SKPath();
+            SKRect rightEyeRect = new SKRect(size * 0.57f, size * 0.23f, size * 0.68f, size * 0.50f);
+            path1.AddOval(rightEyeRect);
+            c.DrawOval(rightEyeRect, paintFill);
         }
 
-
-        private void drawMouth(Canvas canvas)
+        private void drawMouth(SKCanvas c)
         {
-            mouthPath.Reset();
 
-            mouthPath.MoveTo(size * 0.22f, size * 0.7f);
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = mouthColor.ToSKColor()
+            };
+
+            var path = new SKPath();
+            path.MoveTo(size * 0.22f, size * 0.70f);
 
             if (HappinessState == StateButton.Happy)
             {
-                mouthPath.QuadTo(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
-                mouthPath.QuadTo(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.80f, size * 0.78f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.90f, size * 0.22f, size * 0.70f);
             }
             else
             {
-                mouthPath.QuadTo(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
-                mouthPath.QuadTo(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.50f, size * 0.78f, size * 0.70f);
+                path.QuadTo(size * 0.50f, size * 0.60f, size * 0.22f, size * 0.70f);
             }
-
-            paint.Color = mouthColor;
-            paint.SetStyle(Paint.Style.Fill);
-            canvas.DrawPath(mouthPath, paint);
+            c.DrawPath(path, paintFill);
         }
 
-        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
-        {
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+        //protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        //{
+        //    base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
 
-            Console.WriteLine($"OnMeasure - {widthMeasureSpec}, {heightMeasureSpec}");
-
-            size = Math.Min(MeasuredWidth, MeasuredHeight);
-            SetMeasuredDimension((int)size, (int)size);
-        }        
+        //    size = Math.Min(MeasuredWidth, MeasuredHeight);
+        //    SetMeasuredDimension((int)size, (int)size);
+        //}        
 
         private void Initialize(IAttributeSet attrs)
         {
