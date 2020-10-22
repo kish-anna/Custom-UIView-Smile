@@ -11,8 +11,6 @@ namespace Smile_IOS
     [Register("EmotionalFaceView"), DesignTimeVisible(true)]
     public class EmotionalFaceView : SKCanvasView
     {
-        float size = 0;
-
         [Export("BGColor"), Browsable(true)]
         public UIColor BGColor { get; set; }
 
@@ -42,25 +40,12 @@ namespace Smile_IOS
 
         public EmotionalFaceView(IntPtr handle) : base(handle)
         {
-            Initialize();
-        }
-        public EmotionalFaceView()
-        {
-            Initialize();
-        }
-        public override void AwakeFromNib()
-        {
-            base.AwakeFromNib();
-            _presenter = new FaceView(size, BGColor.ToSKColor(), BorderColor.ToSKColor(),
-                EyesColor.ToSKColor(), MouthColor.ToSKColor());
-            BackgroundColor = UIColor.Clear;
-        }
-        void Initialize()
-        {
             BGColor = UIColor.Clear;
             EyesColor = UIColor.Clear;
             MouthColor = UIColor.Clear;
             BorderColor = UIColor.Clear;
+            HappinessState = StateButton.Happy;
+            BackgroundColor = UIColor.Clear;
         }
 
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
@@ -68,8 +53,9 @@ namespace Smile_IOS
             base.OnPaintSurface(e);
             var g = e.Surface.Canvas;
 
-            size = Math.Min(e.Info.Height, e.Info.Width);
-            _presenter.Size = size;
+            _presenter = new FaceView(Math.Min(e.Info.Height, e.Info.Width), BGColor.ToSKColor(),
+                BorderColor.ToSKColor(), EyesColor.ToSKColor(), MouthColor.ToSKColor());
+
             DrawFaceBackground(g);
             DrawEyes(g);
             DrawMouth(g);

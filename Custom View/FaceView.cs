@@ -11,8 +11,6 @@ namespace Smile
             EyesColor = eyesColor;
             MouthColor = mouthColor;
             Size = size;
-            
-
         }
 
         private float _size;
@@ -30,6 +28,16 @@ namespace Smile
 
             }
         }
+
+        public SKRect LeftEyeRect { get; private set; }
+        public SKRect RightEyeRect { get; private set; }
+        public SKPath FacePath { get; private set; }
+
+        public float Radius { get; private set; }
+        public SKColor FillColor { get; set; }
+        public SKColor StrokeColor { get; set; }
+        public SKColor EyesColor { get; set; }
+        public SKColor MouthColor { get; set; }
 
         public SKPath GetFacePath()
         {
@@ -60,17 +68,6 @@ namespace Smile
 
             return path;
         }
-
-        public SKRect LeftEyeRect { get; private set; }
-        public SKRect RightEyeRect { get; private set; }
-        public SKPath FacePath { get; private set; }
-
-        public float Radius { get; private set; }
-        public SKColor FillColor { get; set; }
-        public SKColor StrokeColor { get; set; }
-        public SKColor EyesColor { get; set; }
-        public SKColor MouthColor { get; set; }
-        
     }
 }
 

@@ -9,15 +9,10 @@ namespace Smile
 {
     public class EmotionalFaceView : SKCanvasView
     {
-        Color faceColor = new Color(CustomSettings.DefaultFaceColor);
-        Color eyesColor = new Color(CustomSettings.DefaultEyesColor);
-        Color mouthColor = new Color(CustomSettings.DefaultMouthColor);
-        Color borderColor = new Color(CustomSettings.DefaultBorderColor);
-        //float borderWidth = CustomSettings.DefaultBorderWidth;
-
-        float size = 0;
-
-        public static IAttributeSet Attrs;
+        Color faceColor;
+        Color eyesColor;
+        Color mouthColor;
+        Color borderColor;
 
         private StateButton _happinessState;
 
@@ -33,14 +28,11 @@ namespace Smile
             }
         }
 
-        public EmotionalFaceView(Context context, IAttributeSet attrs) :
-            base(context, attrs)
+        public EmotionalFaceView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
-            Initialize(attrs);
-            _presenter = new FaceView(size, faceColor.ToSKColor(), borderColor.ToSKColor(),
-                eyesColor.ToSKColor(), mouthColor.ToSKColor());
+            setupAttributes(attrs);
             SetBackgroundColor(Color.Transparent);
-        }       
+        }
 
         private void setupAttributes(IAttributeSet attrs)
         {
@@ -48,12 +40,11 @@ namespace Smile
 
             var typedArray = Context.Theme.ObtainStyledAttributes(attrs, attrsArray, 0, 0);
 
-            HappinessState = (StateButton)typedArray.GetInt(Resource.Styleable.EmotionalFaceView_state, (int)StateButton.Happy);
-            faceColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_faceColor, CustomSettings.DefaultFaceColor);
-            eyesColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_eyesColor, CustomSettings.DefaultEyesColor);
-            mouthColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_mouthColor, CustomSettings.DefaultMouthColor);
-            borderColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_borderColor, CustomSettings.DefaultBorderColor);
-            //borderWidth = typedArray.GetDimension(Resource.Styleable.EmotionalFaceView_borderWidth, CustomSettings.DefaultBorderWidth);
+            _happinessState = (StateButton)typedArray.GetInt(Resource.Styleable.EmotionalFaceView_state, (int)StateButton.Happy);
+            faceColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_faceColor, Color.Transparent);
+            eyesColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_eyesColor, Color.Transparent);
+            mouthColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_mouthColor, Color.Transparent);
+            borderColor = typedArray.GetColor(Resource.Styleable.EmotionalFaceView_borderColor, Color.Transparent);
 
             typedArray.Recycle();
         }
@@ -63,13 +54,12 @@ namespace Smile
             base.OnPaintSurface(e);
 
             var canvas = e.Surface.Canvas;
-            size = Math.Min(e.Info.Width, e.Info.Height);
-            _presenter.Size = size;
+            _presenter = new FaceView(Math.Min(e.Info.Width, e.Info.Height), faceColor.ToSKColor(),
+                borderColor.ToSKColor(), eyesColor.ToSKColor(), mouthColor.ToSKColor());
 
             drawFaceBackground(canvas);
             drawEyes(canvas);
             drawMouth(canvas);
-
         }
 
         private void drawFaceBackground(SKCanvas c)
@@ -122,21 +112,5 @@ namespace Smile
                 c.DrawPath(_presenter.GetSadMouth(), paintFill);
             }
         }
-
-        //protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
-        //{
-        //    base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        //    size = Math.Min(MeasuredWidth, MeasuredHeight);
-        //    SetMeasuredDimension((int)size, (int)size);
-        //}        
-
-        private void Initialize(IAttributeSet attrs)
-        {
-            Attrs = attrs;
-            setupAttributes(attrs);            
-        }
     }
-    
-
 }

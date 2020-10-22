@@ -2220,6 +2220,9 @@ namespace Smile
 			// aapt resource value: 0x7F05008B
 			public const int white = 2131034251;
 			
+			// aapt resource value: 0x7F05008C
+			public const int yellow = 2131034252;
+			
 			static Color()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
