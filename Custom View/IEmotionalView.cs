@@ -9,5 +9,6 @@ namespace Smile
 
         SKColor FillColor { get; set; }
         SKColor StrokeColor { get; set; }
+
     }
 }

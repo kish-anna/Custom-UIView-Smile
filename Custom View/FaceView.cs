@@ -1,8 +1,9 @@
-﻿using SkiaSharp;
+﻿using CustomView;
+using SkiaSharp;
 
 namespace Smile
 {
-    public class FaceView : IEmotionalView
+    public class FaceView : IEmotionalView 
     {
         public FaceView(float size, SKColor fillColor, SKColor strokeColor, SKColor eyesColor, SKColor mouthColor)
         {
@@ -68,6 +69,67 @@ namespace Smile
 
             return path;
         }
+
+        public void Draw(SKCanvas c, StateButton stateButton)
+        {
+            DrawFaceBackground(c);
+            DrawEyes(c);
+            DrawMouth(c, stateButton);
+        }
+        public void DrawEyes(SKCanvas c)
+        {
+            
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = EyesColor
+            };
+
+            c.DrawOval(LeftEyeRect, paintFill);
+            c.DrawOval(RightEyeRect, paintFill);
+            
+        }
+
+        public void DrawFaceBackground(SKCanvas c)
+        {
+           
+            var paintStroke = new SKPaint
+            {
+                Style = SKPaintStyle.Stroke,
+                Color = StrokeColor,
+                StrokeWidth = 2.0f
+            };
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = FillColor
+            };
+
+            c.DrawPath(FacePath, paintFill);
+            c.DrawPath(FacePath, paintStroke);
+            
+        }
+
+        public void DrawMouth(SKCanvas c,StateButton stateButton)
+        {
+           
+            var paintFill = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = MouthColor
+            };
+
+            if (stateButton == StateButton.Happy)
+            {
+                c.DrawPath(GetHappyMouth(), paintFill);
+            }
+            else
+            {
+                c.DrawPath(GetSadMouth(), paintFill);
+            }
+           
+        }
+
     }
 }
 

@@ -4,12 +4,11 @@ using Smile;
 using Foundation;
 using System.ComponentModel;
 using SkiaSharp.Views.iOS;
-using SkiaSharp;
 
 namespace Smile_IOS
 {
     [Register("EmotionalFaceView"), DesignTimeVisible(true)]
-    public class EmotionalFaceView : SKCanvasView
+    public class EmotionalFaceView : SKCanvasView 
     {
         [Export("BGColor"), Browsable(true)]
         public UIColor BGColor { get; set; }
@@ -56,57 +55,8 @@ namespace Smile_IOS
             _presenter = new FaceView(Math.Min(e.Info.Height, e.Info.Width), BGColor.ToSKColor(),
                 BorderColor.ToSKColor(), EyesColor.ToSKColor(), MouthColor.ToSKColor());
 
-            DrawFaceBackground(g);
-            DrawEyes(g);
-            DrawMouth(g);
-        }
-        private void DrawFaceBackground(SKCanvas c)
-        {
-
-            var paintStroke = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                Color = _presenter.StrokeColor,
-                StrokeWidth = 2.0f
-            };
-            var paintFill = new SKPaint
-            {
-                Style = SKPaintStyle.Fill,
-                Color = _presenter.FillColor
-            };
-
-            c.DrawPath(_presenter.FacePath, paintFill);
-            c.DrawPath(_presenter.FacePath, paintStroke);
-        }
-        private void DrawEyes(SKCanvas c)
-        {
-            var paintFill = new SKPaint
-            {
-                Style = SKPaintStyle.Fill,
-                Color = _presenter.EyesColor
-            };
-
-            c.DrawOval(_presenter.LeftEyeRect, paintFill);
-            c.DrawOval(_presenter.RightEyeRect, paintFill);
+            _presenter.Draw(g, HappinessState);
         }
 
-        private void DrawMouth(SKCanvas c)
-        {
-            var paintFill = new SKPaint
-            {
-                Style = SKPaintStyle.Fill,
-                Color = _presenter.MouthColor
-            };
-
-            if(HappinessState == StateButton.Happy)
-            {
-                c.DrawPath(_presenter.GetHappyMouth(), paintFill);
-            }
-            else
-            {
-                c.DrawPath(_presenter.GetSadMouth(), paintFill);
-            }
-            
-        }
     }
 }
